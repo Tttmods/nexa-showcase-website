@@ -144,6 +144,19 @@ let lines=[];for(let i=0;i<40;i++){lines.push({x:Math.random()*linesCanvas.width
 function animateLines(){linesCtx.clearRect(0,0,linesCanvas.width,linesCanvas.height);lines.forEach(l=>{l.x+=l.dx;l.y+=l.dy;if(l.x<0||l.x>linesCanvas.width)l.dx*=-1;if(l.y<0||l.y>linesCanvas.height)l.dy*=-1;linesCtx.beginPath();linesCtx.moveTo(l.x,l.y);linesCtx.lineTo(l.x+l.length,l.y);linesCtx.strokeStyle='rgba(0,255,127,0.2)';linesCtx.lineWidth=2;linesCtx.stroke();});requestAnimationFrame(animateLines);}
 animateLines();
 window.addEventListener('resize',()=>{linesCanvas.width=window.innerWidth;linesCanvas.height=window.innerHeight;});
+  <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/68b672fad45e5d19250fb3b2/1j44b296q';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </script>
 </body>
 </html>
