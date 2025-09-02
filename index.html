@@ -5,146 +5,166 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nexa Studios</title>
 <style>
-body {
-  margin:0;
-  font-family:'Arial Black',sans-serif;
-  background:#0a0a0a;
-  color:#00ff7f;
-  overflow-x:hidden;
-  position:relative;
-}
+/* Basic Styles */
+body {margin:0;font-family:'Arial Black',sans-serif;background:#0a0a0a;color:#00ff7f;overflow-x:hidden;}
 a{text-decoration:none;color:#00ff7f;}
-h1,h2,h3{text-shadow:0 0 5px #00ff7f,0 0 20px #00ff7f,0 0 40px #00ff7f;animation:flicker 2s infinite;}
-.container{max-width:1200px;margin:0 auto;padding:20px;position:relative;z-index:2;}
-canvas#neon-bg,canvas#lines-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
-header{text-align:center;padding:50px 20px;background:linear-gradient(90deg,#00ff7f,#ffffff,#00ff7f);color:#000;border-bottom:3px solid #00ff7f;animation:pulse 3s infinite;position:relative;z-index:1;}
-header h1{font-size:4em;margin:0;}
-header p{font-size:1.5em;margin:10px 0 0 0;}
-nav{display:flex;justify-content:center;gap:40px;background:#000;padding:15px 0;position:relative;z-index:2;}
-nav a{font-size:1.5em;padding:10px 20px;border:2px solid #00ff7f;border-radius:10px;transition:all 0.3s;animation:neon-glow 1.5s infinite alternate;}
-nav a:hover{background:#00ff7f;color:#000;box-shadow:0 0 30px #00ff7f,0 0 60px #00ff7f,0 0 90px #00ff7f;}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px;margin-top:40px;position:relative;z-index:2;}
-.product{background:#111;border:2px solid #00ff7f;border-radius:20px;padding:20px;text-align:center;transition:transform 0.3s,box-shadow 0.3s;animation:pulse 4s infinite;}
-.product:hover{transform:scale(1.05);box-shadow:0 0 50px #00ff7f;}
-.product img{width:100%;border-radius:15px;margin-bottom:15px;}
-.product h3{font-size:2em;margin:10px 0;animation:flicker 2s infinite;}
+header{text-align:center;padding:50px;background:linear-gradient(90deg,#00ff7f,#fff,#00ff7f);color:#000;border-bottom:3px solid #00ff7f;animation:neonPulse 3s infinite;}
+header h1{font-size:4em;text-shadow:0 0 5px #00ff7f,0 0 20px #00ff7f,0 0 40px #00ff7f;animation:flicker 2s infinite;}
+nav{display:flex;justify-content:center;gap:40px;background:#000;padding:15px 0;position:sticky;top:0;z-index:100;}
+nav a{font-size:1.5em;padding:10px 20px;border:2px solid #00ff7f;border-radius:10px;transition:all 0.3s;}
+nav a:hover{background:#00ff7f;color:#000;box-shadow:0 0 20px #00ff7f,0 0 40px #00ff7f;}
+section{padding:50px;text-align:center;position:relative;z-index:2;}
+h2{font-size:3em;text-shadow:0 0 5px #00ff7f,0 0 20px #00ff7f;}
+/* Products */
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:30px;margin-top:40px;}
+.product{background:#111;border:2px solid #00ff7f;border-radius:20px;padding:20px;text-align:center;transition:transform 0.3s,box-shadow 0.3s;}
+.product:hover{transform:scale(1.05);box-shadow:0 0 50px #00ff7f,0 0 100px #00ff7f;}
+.product img{width:100%;border-radius:15px;margin-bottom:15px;transition:transform 0.3s;}
+.product img:hover{transform:scale(1.1);}
+.product h3{font-size:2em;margin:10px 0;}
 .product p{font-size:1.2em;margin:5px 0;}
-.product button{font-size:1.2em;padding:15px 30px;border:none;border-radius:15px;background:#00ff7f;color:#000;cursor:pointer;transition:all 0.3s;box-shadow:0 0 10px #00ff7f;animation:neon-glow 1.5s infinite alternate;margin-top:10px;}
-.product button:hover{background:#fff;color:#00ff7f;box-shadow:0 0 30px #00ff7f,0 0 60px #00ff7f;}
-.admin{background:#111;border:2px solid #00ff7f;border-radius:20px;padding:30px;margin-top:50px;position:relative;z-index:2;}
-.admin input,.admin textarea,.admin button{width:100%;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #00ff7f;background:#000;color:#00ff7f;font-size:1.2em;}
-.admin button{font-weight:bold;cursor:pointer;animation:neon-glow 1.5s infinite alternate;}
-.admin button:hover{background:#fff;color:#00ff7f;box-shadow:0 0 20px #00ff7f;}
-.hidden{display:none;}
-.edit-buttons{display:flex;gap:15px;justify-content:center;margin-top:10px;}
-.edit-buttons button{width:45%;font-size:1em;padding:10px;}
+.product button{font-size:1.2em;padding:15px 30px;border:none;border-radius:15px;background:#00ff7f;color:#000;cursor:pointer;transition:all 0.3s;box-shadow:0 0 10px #00ff7f;}
+.product button:hover{background:#fff;color:#00ff7f;box-shadow:0 0 50px #00ff7f,0 0 100px #00ff7f;transform:scale(1.1);}
+/* Modal */
+.modal{display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.95);}
+.modal-content{background:#111;margin:10% auto;padding:20px;border:2px solid #00ff7f;width:80%;border-radius:20px;text-align:center;color:#00ff7f;animation:modalPop 0.5s;}
+.close{color:#00ff7f;float:right;font-size:28px;font-weight:bold;cursor:pointer;}
+.close:hover{color:#fff;}
+/* Admin */
+.admin-form{display:none;max-width:500px;margin:0 auto;padding:30px;background:#111;border:2px solid #00ff7f;border-radius:20px;}
+.admin-form input, .admin-form button{width:100%;padding:15px;margin:10px 0;border-radius:10px;border:2px solid #00ff7f;background:#000;color:#00ff7f;font-size:1.2em;}
+.admin-form button{font-weight:bold;cursor:pointer;transition:all 0.3s;}
+.admin-form button:hover{background:#fff;color:#00ff7f;box-shadow:0 0 50px #00ff7f,0 0 100px #00ff7f;}
+/* Neon Animations */
 @keyframes flicker{0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;}20%,22%,24%,55%{opacity:0.5;}}
-@keyframes pulse{0%,100%{box-shadow:0 0 20px #00ff7f;}50%{box-shadow:0 0 50px #00ff7f;}}
-@keyframes neon-glow{0%{box-shadow:0 0 5px #00ff7f;color:#00ff7f;}50%{box-shadow:0 0 20px #00ff7f;color:#fff;}100%{box-shadow:0 0 5px #00ff7f;color:#00ff7f;}}
+@keyframes neonPulse{0%,100%{box-shadow:0 0 20px #00ff7f;}50%{box-shadow:0 0 50px #00ff7f;}}
+@keyframes modalPop{0%{transform:scale(0.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+/* Animated Background */
+body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,#00ff7f33,#000 70%);z-index:0;animation:bgPulse 5s infinite alternate;}
+@keyframes bgPulse{0%{background:radial-gradient(circle,#00ff7f33,#000 70%);}100%{background:radial-gradient(circle,#00ff7f55,#000 70%);}}
 </style>
-<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
-<canvas id="neon-bg"></canvas>
-<canvas id="lines-bg"></canvas>
-
 <header>
 <h1>Nexa Studios</h1>
-<p>Servers, Products, Services — Neon Style</p>
+<p>Neon Servers & Products</p>
 </header>
 
 <nav>
 <a href="#home">Home</a>
 <a href="#products">Products</a>
-<a href="#admin">Admin</a>
+<a href="#admin-section">Admin</a>
 </nav>
 
-<div class="container" id="home">
+<section id="home">
 <h2>Welcome to Nexa Studios</h2>
-<p>Browse our products and servers. Click "Buy" to pay securely with Stripe!</p>
-</div>
+<p>Explore our futuristic neon products and servers.</p>
+</section>
 
-<div class="container" id="products">
-<h2>Products & Servers</h2>
+<section id="products">
+<h2>Our Products</h2>
 <div class="products" id="product-list"></div>
-</div>
+</section>
 
-<div class="container" id="admin">
+<section id="admin-section">
 <h2>Admin Panel</h2>
-<div class="admin" id="login-section">
-<input type="password" id="admin-password" placeholder="Enter Admin Password">
-<button onclick="login()">Login</button>
+<div class="admin-form" id="admin-form">
+<input type="password" id="admin-password" placeholder="Enter admin password">
+<button onclick="checkAdmin()">Login</button>
+</div>
+<div id="admin-dashboard" class="admin-form" style="display:none;">
+<h3>Welcome Admin</h3>
+<p>Add new products:</p>
+<input type="text" id="new-name" placeholder="Product Name">
+<input type="text" id="new-desc" placeholder="Product Description">
+<input type="number" id="new-price" placeholder="Price">
+<input type="text" id="new-img" placeholder="Image URL">
+<button onclick="addProduct()">Add Product</button>
+</div>
+</section>
+
+<!-- Product Modal -->
+<div id="product-modal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeModal()">&times;</span>
+<h2 id="modal-name"></h2>
+<img id="modal-img" src="" alt="" style="width:50%;border-radius:20px;">
+<p id="modal-desc"></p>
+<p id="modal-price"></p>
+<button id="buy-btn">Buy Now</button>
+</div>
 </div>
 
-<div class="admin hidden" id="admin-section">
-<input type="text" id="product-name" placeholder="Product Name">
-<textarea id="product-desc" placeholder="Product Description"></textarea>
-<input type="number" id="product-price" placeholder="Price (USD)">
-<input type="text" id="product-img" placeholder="Image URL">
-<button onclick="addOrUpdateProduct()">Add / Update Product</button>
-<button onclick="logout()">Logout</button>
-</div>
-</div>
-
+<script src="https://js.stripe.com/v3/"></script>
 <script>
-// --- Admin + Products + Stripe ---
-const ADMIN_PASSWORD = "nexa123";
-let products = JSON.parse(localStorage.getItem('products')||'[]');
-let editIndex=-1;
+// Stripe
 const stripe = Stripe("pk_test_51S2lOFDwKl8vcyWsb40CC7qF5apa8JuqhOQieznHQmw3ZgJvEsn70lk8oysZqvnDRJCtmKKM6WV9JEYYzTkd5OV100ChKkon6x");
 
+// Products
+let products = [
+{id:1,name:"Server Alpha",desc:"High-speed gaming server.",price:20,img:"https://via.placeholder.com/300"},
+{id:2,name:"Server Beta",desc:"Premium hosting server.",price:30,img:"https://via.placeholder.com/300"}
+];
+
 function renderProducts(){
-const list=document.getElementById('product-list'); list.innerHTML='';
-products.forEach((p,index)=>{
-const div=document.createElement('div'); div.className='product';
-div.innerHTML=`
-<img src="${p.img||'https://via.placeholder.com/300'}" alt="${p.name}">
-<h3>${p.name}</h3>
-<p>${p.desc}</p>
-<p><strong>Price: $${p.price}</strong></p>
-<button onclick="buyProduct(${index})">Buy</button>
-<div class="edit-buttons hidden" id="edit-btns-${index}">
-<button onclick="editProduct(${index})">Edit</button>
-<button onclick="deleteProduct(${index})">Delete</button>
-</div>`;
-list.appendChild(div);
-});
+  const container = document.getElementById('product-list');
+  container.innerHTML="";
+  products.forEach(p=>{
+    const div=document.createElement('div');
+    div.className='product';
+    div.innerHTML=`<img src="${p.img}" alt="${p.name}"><h3>${p.name}</h3><p>${p.desc}</p><p>Price: $${p.price}</p><button onclick="openModal(${p.id})">View Product</button>`;
+    container.appendChild(div);
+  });
 }
-
-function buyProduct(index){
-const product=products[index]; const amount=parseInt(product.price*100);
-stripe.redirectToCheckout({
-lineItems:[{ price_data:{ currency:'usd', product_data:{name:product.name,description:product.desc}, unit_amount:amount}, quantity:1 }],
-mode:'payment',
-successUrl:window.location.href+"?success=true",
-cancelUrl:window.location.href+"?canceled=true",
-}).then(res=>{if(res.error)alert(res.error.message);});
-}
-
-function login(){const pass=document.getElementById('admin-password').value;if(pass===ADMIN_PASSWORD){document.getElementById('login-section').classList.add('hidden');document.getElementById('admin-section').classList.remove('hidden');showEditButtons();}else alert('Incorrect password!');}
-function logout(){document.getElementById('login-section').classList.remove('hidden');document.getElementById('admin-section').classList.add('hidden');document.getElementById('admin-password').value='';hideEditButtons();}
-function addOrUpdateProduct(){const name=document.getElementById('product-name').value;const desc=document.getElementById('product-desc').value;const price=document.getElementById('product-price').value;const img=document.getElementById('product-img').value;if(!name||!desc||!price)return alert('Fill all fields!');if(editIndex>=0){products[editIndex]={name,desc,price,img};editIndex=-1;}else{products.push({name,desc,price,img});}localStorage.setItem('products',JSON.stringify(products));document.getElementById('product-name').value='';document.getElementById('product-desc').value='';document.getElementById('product-price').value='';document.getElementById('product-img').value='';renderProducts();showEditButtons();}
-function editProduct(index){editIndex=index;const p=products[index];document.getElementById('product-name').value=p.name;document.getElementById('product-desc').value=p.desc;document.getElementById('product-price').value=p.price;document.getElementById('product-img').value=p.img;}
-function deleteProduct(index){if(confirm('Delete this product?')){products.splice(index,1);localStorage.setItem('products',JSON.stringify(products));renderProducts();showEditButtons();}}
-function showEditButtons(){products.forEach((_,i)=>document.getElementById(`edit-btns-${i}`).classList.remove('hidden'));}
-function hideEditButtons(){products.forEach((_,i)=>document.getElementById(`edit-btns-${i}`).classList.add('hidden'));}
 renderProducts();
 
-// --- Neon Particle Background ---
-const canvas=document.getElementById('neon-bg');const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-let particles=[];for(let i=0;i<120;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,dx:(Math.random()-0.5)*1.5,dy:(Math.random()-0.5)*1.5,radius:Math.random()*2+1});}
-function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);ctx.fillStyle='rgba(0,255,127,0.8)';ctx.fill();});requestAnimationFrame(animate);}
-animate();
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+function openModal(id){
+  const p = products.find(x=>x.id===id);
+  document.getElementById('modal-name').innerText=p.name;
+  document.getElementById('modal-img').src=p.img;
+  document.getElementById('modal-desc').innerText=p.desc;
+  document.getElementById('modal-price').innerText="Price: $"+p.price;
+  document.getElementById('buy-btn').onclick=function(){
+    stripe.redirectToCheckout({
+      lineItems:[{price_data:{currency:'usd',product_data:{name:p.name},unit_amount:p.price*100},quantity:1}],
+      mode:'payment',
+      successUrl:window.location.href+"?success=true",
+      cancelUrl:window.location.href+"?canceled=true"
+    });
+  };
+  document.getElementById('product-modal').style.display='block';
+}
+function closeModal(){document.getElementById('product-modal').style.display='none';}
 
-// --- Neon Moving Lines Background ---
-const linesCanvas=document.getElementById('lines-bg');const linesCtx=linesCanvas.getContext('2d');linesCanvas.width=window.innerWidth;linesCanvas.height=window.innerHeight;
-let lines=[];for(let i=0;i<40;i++){lines.push({x:Math.random()*linesCanvas.width,y:Math.random()*linesCanvas.height,length:Math.random()*200+50,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2});}
-function animateLines(){linesCtx.clearRect(0,0,linesCanvas.width,linesCanvas.height);lines.forEach(l=>{l.x+=l.dx;l.y+=l.dy;if(l.x<0||l.x>linesCanvas.width)l.dx*=-1;if(l.y<0||l.y>linesCanvas.height)l.dy*=-1;linesCtx.beginPath();linesCtx.moveTo(l.x,l.y);linesCtx.lineTo(l.x+l.length,l.y);linesCtx.strokeStyle='rgba(0,255,127,0.2)';linesCtx.lineWidth=2;linesCtx.stroke();});requestAnimationFrame(animateLines);}
-animateLines();
-window.addEventListener('resize',()=>{linesCanvas.width=window.innerWidth;linesCanvas.height=window.innerHeight;});
-  <!--Start of Tawk.to Script-->
+// Admin
+document.getElementById('admin-form').style.display='block';
+function checkAdmin(){
+  const pw=document.getElementById('admin-password').value;
+  if(pw==="Nexa!Secure2025"){
+    document.getElementById('admin-form').style.display='none';
+    document.getElementById('admin-dashboard').style.display='block';
+  }else{alert("Wrong password!");}
+}
+function addProduct(){
+  const name=document.getElementById('new-name').value;
+  const desc=document.getElementById('new-desc').value;
+  const price=parseFloat(document.getElementById('new-price').value);
+  const img=document.getElementById('new-img').value;
+  if(name && desc && price && img){
+    const id = products.length+1;
+    products.push({id,name,desc,price,img});
+    renderProducts();
+    alert("Product added!");
+    document.getElementById('new-name').value='';
+    document.getElementById('new-desc').value='';
+    document.getElementById('new-price').value='';
+    document.getElementById('new-img').value='';
+  }else{alert("Fill all fields!");}
+}
+</script>
+
+<!-- Tawk.to -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -158,3 +178,5 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 </body>
 </html>
+
+
